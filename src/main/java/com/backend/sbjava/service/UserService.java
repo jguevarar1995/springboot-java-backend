@@ -28,7 +28,7 @@ public class UserService {
                 return ResponseHandler.generateResponse(ResponseHandlerConstants.SUCCESS.getMessage(), HttpStatus.OK,
                         this.userConverter.convertEntityToDto(userEntity));
             } else {
-                return ResponseHandler.generateApiError(ResponseHandlerConstants.NO_VALID.getMessage(), HttpStatus.BAD_REQUEST);
+                return ResponseHandler.generateApiError(ResponseHandlerConstants.NO_VALID.getMessage(), HttpStatus.UNAUTHORIZED);
             }
         } else {
             return ResponseHandler.generateApiError(ResponseHandlerConstants.NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
