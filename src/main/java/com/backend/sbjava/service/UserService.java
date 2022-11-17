@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.backend.sbjava.constants.ResponseHandlerConstants;
 import com.backend.sbjava.converter.UserConverter;
 import com.backend.sbjava.dto.UserDto;
 import com.backend.sbjava.model.UserEntity;
@@ -24,13 +25,13 @@ public class UserService {
         UserEntity userEntity = userRepository.findByEmail(userDto.getEmail());
         if (userEntity != null) {
             if (userDto.getPassword().equals(userEntity.getPassword())) {
-                return ResponseHandler.generateResponse("success", HttpStatus.OK,
+                return ResponseHandler.generateResponse(ResponseHandlerConstants.SUCCESS.getMessage(), HttpStatus.OK,
                         this.userConverter.convertEntityToDto(userEntity));
             } else {
-                return ResponseHandler.generateApiError("Email o contraseña no válida", HttpStatus.BAD_REQUEST);
+                return ResponseHandler.generateApiError(ResponseHandlerConstants.NO_VALID.getMessage(), HttpStatus.BAD_REQUEST);
             }
         } else {
-            return ResponseHandler.generateApiError("No existe el usuario", HttpStatus.NOT_FOUND);
+            return ResponseHandler.generateApiError(ResponseHandlerConstants.NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 

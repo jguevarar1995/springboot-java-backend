@@ -14,6 +14,7 @@ public enum ResponseHandlerConstants {
 
     DELETED_MESSAGE("El estudiante %s %s ha sido eliminado"),
     FOUND("Ya existe el usuario"),
+    NO_VALID("Email o contraseña no válidos"),
     NOT_FOUND("El estudiante no existe"),
     SUCCESS("success");
 

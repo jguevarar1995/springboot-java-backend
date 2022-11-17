@@ -23,7 +23,7 @@ public class StudentService {
     private StudentConverter studentConverter;
 
     public ResponseEntity<Object> getAllStudents() {
-        return ResponseHandler.generateResponse(ResponseHandlerConstants.SUCCESS.toString(), HttpStatus.OK,
+        return ResponseHandler.generateResponse(ResponseHandlerConstants.SUCCESS.getMessage(), HttpStatus.OK,
                 studentRepository.findAll()
                         .stream()
                         .map(student -> studentConverter.convertEntityToDto(student))
@@ -34,10 +34,10 @@ public class StudentService {
         StudentEntity studentEntity = studentRepository.findById(id)
                 .orElse(null);
         if (studentEntity == null) {
-            return ResponseHandler.generateApiError(ResponseHandlerConstants.NOT_FOUND.toString(),
+            return ResponseHandler.generateApiError(ResponseHandlerConstants.NOT_FOUND.getMessage(),
                     HttpStatus.NOT_FOUND);
         } else {
-            return ResponseHandler.generateResponse(ResponseHandlerConstants.SUCCESS.toString(), HttpStatus.OK,
+            return ResponseHandler.generateResponse(ResponseHandlerConstants.SUCCESS.getMessage(), HttpStatus.OK,
                     this.studentConverter.convertEntityToDto(studentEntity));
         }
     }
@@ -45,11 +45,11 @@ public class StudentService {
     public ResponseEntity<Object> createNewStudent(StudentDto student) {
         StudentEntity persistedStudent = studentRepository.findByDocNumber(student.getDocNumber());
         if (persistedStudent != null) {
-            return ResponseHandler.generateApiError(ResponseHandlerConstants.FOUND.toString(), HttpStatus.CONFLICT);
+            return ResponseHandler.generateApiError(ResponseHandlerConstants.FOUND.getMessage(), HttpStatus.CONFLICT);
         } else {
             StudentEntity studentEntity = studentConverter.convertDtotoEntity(student);
             this.studentRepository.save(studentEntity);
-            return ResponseHandler.generateResponse(ResponseHandlerConstants.SUCCESS.toString(), HttpStatus.OK,
+            return ResponseHandler.generateResponse(ResponseHandlerConstants.SUCCESS.getMessage(), HttpStatus.OK,
                     this.studentConverter.convertEntityToDto(studentEntity));
         }
 
@@ -59,12 +59,13 @@ public class StudentService {
         StudentEntity persistedStudent = studentRepository.findById(id)
                 .orElse(null);
         if (persistedStudent == null) {
-            return ResponseHandler.generateApiError(ResponseHandlerConstants.NOT_FOUND.toString(), HttpStatus.NOT_FOUND);
+            return ResponseHandler.generateApiError(ResponseHandlerConstants.NOT_FOUND.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } else {
             studentDto.setId(id);
             StudentEntity studentEntity = studentConverter.convertDtotoEntity(studentDto);
             this.studentRepository.save(studentEntity);
-            return ResponseHandler.generateResponse(ResponseHandlerConstants.SUCCESS.toString(), HttpStatus.OK,
+            return ResponseHandler.generateResponse(ResponseHandlerConstants.SUCCESS.getMessage(), HttpStatus.OK,
                     this.studentConverter.convertEntityToDto(studentEntity));
         }
     }
@@ -73,12 +74,13 @@ public class StudentService {
         StudentEntity studentEntity = studentRepository.findById(id)
                 .orElse(null);
         if (studentEntity == null) {
-            return ResponseHandler.generateApiError(ResponseHandlerConstants.NOT_FOUND.toString(), HttpStatus.NOT_FOUND);
+            return ResponseHandler.generateApiError(ResponseHandlerConstants.NOT_FOUND.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } else {
             this.studentRepository.delete(studentEntity);
             StudentDto studentDto = studentConverter.convertEntityToDto(studentEntity);
-            return ResponseHandler.generateResponse(ResponseHandlerConstants.SUCCESS.toString(), HttpStatus.OK,
-                    String.format(ResponseHandlerConstants.DELETED_MESSAGE.toString(), studentDto.getFirstName(),
+            return ResponseHandler.generateResponse(ResponseHandlerConstants.SUCCESS.getMessage(), HttpStatus.OK,
+                    String.format(ResponseHandlerConstants.DELETED_MESSAGE.getMessage(), studentDto.getFirstName(),
                             studentDto.getLastName()));
         }
 
