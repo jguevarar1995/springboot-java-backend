@@ -18,11 +18,15 @@ import com.backend.sbjava.util.ResponseHandler;
 @Service
 public class StudentService {
 
-    @Autowired
-    private StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
+
+    private final StudentConverter studentConverter;
 
     @Autowired
-    private StudentConverter studentConverter;
+    public StudentService(StudentRepository studentRepository, StudentConverter studentConverter) {
+        this.studentRepository = studentRepository;
+        this.studentConverter = studentConverter;
+    }
 
     public ResponseEntity<Object> getAllStudents() {
         List<StudentEntity> studentEntityList = studentRepository.findAll();
@@ -33,7 +37,7 @@ public class StudentService {
             return ResponseHandler.generateResponse(ResponseHandlerConstants.SUCCESS.getMessage(), HttpStatus.OK,
                     studentEntityList
                             .stream()
-                            .map(student -> studentConverter.convertEntityToDto(student))
+                            .map(studentConverter::convertEntityToDto)
                             .collect(Collectors.toList()));
         }
     }

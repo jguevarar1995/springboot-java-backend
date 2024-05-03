@@ -15,11 +15,15 @@ import com.backend.sbjava.util.ResponseHandler;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    private final UserConverter userConverter;
 
     @Autowired
-    private UserConverter userConverter;
+    public UserService(UserRepository userRepository, UserConverter userConverter) {
+        this.userRepository = userRepository;
+        this.userConverter = userConverter;
+    }
 
     public ResponseEntity<Object> doLogin(UserDto userDto) {
         UserEntity userEntity = userRepository.findByEmail(userDto.getEmail());

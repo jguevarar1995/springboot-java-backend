@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 
-
 @Getter
 @ToString
 @RequiredArgsConstructor
@@ -19,5 +18,5 @@ public enum ResponseHandlerConstants {
     SUCCESS("success");
 
     private final String message;
-    
+
 }
