@@ -47,5 +47,5 @@ public class StudentController {
     public ResponseEntity<Object> deleteStudent(@PathVariable Long id) {
         return studentService.deleteStudent(id);
     }
-    
+
 }

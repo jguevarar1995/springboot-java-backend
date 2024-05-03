@@ -1,3 +1,7 @@
+CREATE DATABASE IF NOT EXISTS zeus;
+
+USE zeus;
+
 CREATE TABLE IF NOT EXISTS `students` (
   id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   doc_number int(11) unique NOT NULL,
@@ -35,4 +39,4 @@ CREATE TABLE IF NOT EXISTS `users`(
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO users (email, pass, role_id)
-VALUES ('jguevarar1@ucentral.edu.co', SHA2('Judas_Maiden0109', 256), 1);
+VALUES ('admin@test.com', SHA2('Admin_123$', 256), 1);

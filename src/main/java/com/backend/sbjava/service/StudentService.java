@@ -1,6 +1,8 @@
 package com.backend.sbjava.service;
 
+import java.util.List;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +25,17 @@ public class StudentService {
     private StudentConverter studentConverter;
 
     public ResponseEntity<Object> getAllStudents() {
-        return ResponseHandler.generateResponse(ResponseHandlerConstants.SUCCESS.getMessage(), HttpStatus.OK,
-                studentRepository.findAll()
-                        .stream()
-                        .map(student -> studentConverter.convertEntityToDto(student))
-                        .collect(Collectors.toList()));
+        List<StudentEntity> studentEntityList = studentRepository.findAll();
+        if (studentEntityList.isEmpty()) {
+            return ResponseHandler.generateApiError(ResponseHandlerConstants.EMPTY_STUDENT_LIST.getMessage(),
+                    HttpStatus.NOT_FOUND);
+        } else {
+            return ResponseHandler.generateResponse(ResponseHandlerConstants.SUCCESS.getMessage(), HttpStatus.OK,
+                    studentEntityList
+                            .stream()
+                            .map(student -> studentConverter.convertEntityToDto(student))
+                            .collect(Collectors.toList()));
+        }
     }
 
     public ResponseEntity<Object> findById(Long id) {
@@ -43,14 +51,18 @@ public class StudentService {
     }
 
     public ResponseEntity<Object> createNewStudent(StudentDto student) {
-        StudentEntity persistedStudent = studentRepository.findByDocNumber(student.getDocNumber());
-        if (persistedStudent != null) {
-            return ResponseHandler.generateApiError(ResponseHandlerConstants.FOUND.getMessage(), HttpStatus.CONFLICT);
-        } else {
-            StudentEntity studentEntity = studentConverter.convertDtotoEntity(student);
-            this.studentRepository.save(studentEntity);
-            return ResponseHandler.generateResponse(ResponseHandlerConstants.SUCCESS.getMessage(), HttpStatus.OK,
-                    this.studentConverter.convertEntityToDto(studentEntity));
+        try {
+            StudentEntity persistedStudent = studentRepository.findByDocNumber(student.getDocNumber());
+            if (persistedStudent != null) {
+                return ResponseHandler.generateApiError(ResponseHandlerConstants.FOUND.getMessage(), HttpStatus.CONFLICT);
+            } else {
+                StudentEntity studentEntity = studentConverter.convertDtotoEntity(student);
+                this.studentRepository.save(studentEntity);
+                return ResponseHandler.generateResponse(ResponseHandlerConstants.SUCCESS.getMessage(), HttpStatus.OK,
+                        this.studentConverter.convertEntityToDto(studentEntity));
+            }
+        } catch (Exception e) {
+            return ResponseHandler.generateApiError(e.getMessage(), HttpStatus.CONFLICT);
         }
 
     }
