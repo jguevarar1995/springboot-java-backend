@@ -23,6 +23,26 @@ Alternatively you can use the [Spring Boot Maven plugin](https://docs.spring.io/
 mvn spring-boot:run
 ```
 
+## Uso del Docker Compose
+
+### Iniciar el entorno:
+
+Para iniciar el entorno de desarrollo, utiliza el comando `docker-compose up`. Este comando leerá el archivo `docker-compose.yml` y creará los contenedores necesarios según la configuración especificada.
+
+```bash
+docker-compose up
+```
+
+Una vez que los contenedores estén en funcionamiento, podrás acceder a la APIs de tu aplicación a través de la URL [http://localhost:puerto](http://localhost:puerto), donde "puerto" es el puerto especificado en el archivo `docker-compose.yml`.
+
+### Detener y limpiar el entorno:
+
+Cuando hayas terminado de trabajar con la aplicación, puedes detener y limpiar los contenedores con el comando `docker-compose down`. Esto liberará los recursos utilizados por los contenedores y los eliminará al instante.
+
+```bash
+docker-compose down
+```
+
 ## Deploying the application to OpenShift
 
 The easiest way to deploy the sample application to OpenShift is to use the [OpenShift CLI](https://docs.openshift.org/latest/cli_reference/index.html):
